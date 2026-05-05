@@ -4,7 +4,9 @@
 /public/js
 /public/media
 !/public/media/image/.gitkeep
-
+# Mac
+.DS_Store
+.idea
 /etc/build/*
 !/etc/build/.gitignore
 
