@@ -1,2 +1,7 @@
 imports:
     - { resource: "@SyliusPayPalPlugin/config/config.yaml" }
+
+sylius_paypal:
+    sandbox: false        # ← switch to production facilitator
+    logging:
+        increased: false
