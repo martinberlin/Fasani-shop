@@ -1,0 +1,56 @@
+{% extends '@SyliusCore/Email/layout.html.twig' %}
+
+{% block subject %}
+    [Fasani Shop] New order #{{ order.number }} — {{ (order.total / 100)|number_format(2) }} {{ order.currencyCode }}
+{% endblock %}
+
+{% block content %}
+<div style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+    <h2 style="color: #1abb9c;">New order received</h2>
+
+    <p><strong>Order:</strong> #{{ order.number }}</p>
+    <p><strong>Date:</strong> {{ order.checkoutCompletedAt|date('Y-m-d H:i') }}</p>
+    <p><strong>Total:</strong> {{ (order.total / 100)|number_format(2) }} {{ order.currencyCode }}</p>
+
+    <hr style="border: none; border-top: 1px solid #eee; margin: 16px 0;">
+
+    <p><strong>Customer:</strong> {{ order.customer.fullName }} ({{ order.customer.email }})</p>
+
+    {% if order.shippingAddress is not null %}
+    <p>
+        <strong>Ship to:</strong><br>
+        {{ order.shippingAddress.street }}<br>
+        {{ order.shippingAddress.city }} ({{ order.shippingAddress.postcode }})<br>
+        {{ order.shippingAddress.countryCode }}
+    </p>
+    {% endif %}
+
+    <hr style="border: none; border-top: 1px solid #eee; margin: 16px 0;">
+
+    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+        <thead>
+            <tr style="background: #f5f5f5;">
+                <th style="text-align: left; padding: 8px;">Item</th>
+                <th style="text-align: right; padding: 8px;">Qty</th>
+                <th style="text-align: right; padding: 8px;">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in order.items %}
+            <tr>
+                <td style="padding: 8px;">{{ item.productName }} ({{ item.variantName }})</td>
+                <td style="text-align: right; padding: 8px;">{{ item.quantity }}</td>
+                <td style="text-align: right; padding: 8px;">{{ (item.total / 100)|number_format(2) }} {{ order.currencyCode }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <hr style="border: none; border-top: 1px solid #eee; margin: 16px 0;">
+
+    <p style="text-align: right;">
+        <strong>Shipping:</strong> {{ (order.shippingTotal / 100)|number_format(2) }} {{ order.currencyCode }}<br>
+        <strong>Total:</strong> {{ (order.total / 100)|number_format(2) }} {{ order.currencyCode }}
+    </p>
+</div>
+{% endblock %}
