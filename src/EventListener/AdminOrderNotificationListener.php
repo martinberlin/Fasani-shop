@@ -28,7 +28,7 @@ final class AdminOrderNotificationListener
 
     public function __invoke(Event $event): void
     {
-        $this->logger->info('[AdminOrderNotification] Event fired: ' . $event->getName());
+        $this->logger->info('[AdminOrderNotification] Event fired: ' . get_class($event));
 
         $subject = $event->getSubject();
 
