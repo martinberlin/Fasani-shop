@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
@@ -15,20 +16,30 @@ use Symfony\Component\Workflow\Event\CompletedEvent;
 #[AsEventListener(event: 'workflow.sylius_order_checkout.completed.complete')]
 final class AdminOrderNotificationListener
 {
-    public function __construct(private readonly MailerInterface $mailer)
-    {
+    public function __construct(
+        private readonly MailerInterface $mailer,
+        private readonly LoggerInterface $logger,
+    ) {
     }
 
     public function __invoke(CompletedEvent $event): void
     {
+        $this->logger->info('[AdminOrderNotification] Event fired: workflow.sylius_order_checkout.completed.complete');
+
         $order = $event->getSubject();
         if (!$order instanceof OrderInterface) {
+            $this->logger->warning('[AdminOrderNotification] Subject is not an OrderInterface, got: ' . get_class($order));
             return;
         }
+
+        $this->logger->info('[AdminOrderNotification] Order detected: #' . $order->getNumber());
 
         /** @var ChannelInterface $channel */
         $channel = $order->getChannel();
         $contactEmail = $channel->getContactEmail();
+
+        $this->logger->info('[AdminOrderNotification] Channel contact email: ' . ($contactEmail ?? 'NULL - aborting'));
+
         if (null === $contactEmail) {
             return;
         }
@@ -56,6 +67,11 @@ final class AdminOrderNotificationListener
                 $order->getShippingAddress()->getCountryCode()
             ));
 
-        $this->mailer->send($email);
+        try {
+            $this->mailer->send($email);
+            $this->logger->info('[AdminOrderNotification] Email sent successfully to: ' . $contactEmail);
+        } catch (\Throwable $e) {
+            $this->logger->error('[AdminOrderNotification] Failed to send email: ' . $e->getMessage());
+        }
     }
 }
