@@ -10,7 +10,7 @@ use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Mailer\Sender\SenderInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use Symfony\Component\Workflow\Event\CompletedEvent;
+use Symfony\Component\Workflow\Event\Event;
 
 #[AsEventListener(event: 'workflow.sylius_order_payment.completed.pay')]
 #[AsEventListener(event: 'workflow.sylius_order_payment.entered.paid')]
@@ -26,13 +26,12 @@ final class AdminOrderNotificationListener
     ) {
     }
 
-    public function __invoke(CompletedEvent $event): void
+    public function __invoke(Event $event): void
     {
         $this->logger->info('[AdminOrderNotification] Event fired: ' . $event->getName());
 
         $subject = $event->getSubject();
 
-        // Resolve order from either Payment or PaymentRequest subject
         $order = $this->resolveOrder($subject);
 
         if (null === $order) {
@@ -40,7 +39,6 @@ final class AdminOrderNotificationListener
             return;
         }
 
-        // Deduplicate — only send once per order number per request cycle
         if (in_array($order->getNumber(), $this->notifiedOrders, true)) {
             $this->logger->info('[AdminOrderNotification] Already notified for order #' . $order->getNumber() . ', skipping.');
             return;
@@ -80,7 +78,6 @@ final class AdminOrderNotificationListener
             return $subject->getOrder();
         }
 
-        // PaymentRequest has getPayment()->getOrder()
         if (method_exists($subject, 'getPayment')) {
             $payment = $subject->getPayment();
             if ($payment instanceof PaymentInterface) {
