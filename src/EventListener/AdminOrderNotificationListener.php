@@ -13,8 +13,13 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Workflow\Event\CompletedEvent;
 
 #[AsEventListener(event: 'workflow.sylius_order_payment.completed.pay')]
+#[AsEventListener(event: 'workflow.sylius_order_payment.entered.paid')]
+#[AsEventListener(event: 'workflow.sylius_payment_request.completed.complete')]
 final class AdminOrderNotificationListener
 {
+    /** Prevent duplicate emails if multiple events fire for the same order */
+    private array $notifiedOrders = [];
+
     public function __construct(
         private readonly SenderInterface $emailSender,
         private readonly LoggerInterface $logger,
@@ -23,16 +28,21 @@ final class AdminOrderNotificationListener
 
     public function __invoke(CompletedEvent $event): void
     {
-        $payment = $event->getSubject();
-        if (!$payment instanceof PaymentInterface) {
-            $this->logger->warning('[AdminOrderNotification] Subject is not a PaymentInterface, got: ' . get_class($payment));
+        $this->logger->info('[AdminOrderNotification] Event fired: ' . $event->getName());
+
+        $subject = $event->getSubject();
+
+        // Resolve order from either Payment or PaymentRequest subject
+        $order = $this->resolveOrder($subject);
+
+        if (null === $order) {
+            $this->logger->warning('[AdminOrderNotification] Could not resolve Order from subject: ' . get_class($subject));
             return;
         }
 
-        /** @var OrderInterface|null $order */
-        $order = $payment->getOrder();
-        if (null === $order) {
-            $this->logger->warning('[AdminOrderNotification] Payment has no associated order.');
+        // Deduplicate — only send once per order number per request cycle
+        if (in_array($order->getNumber(), $this->notifiedOrders, true)) {
+            $this->logger->info('[AdminOrderNotification] Already notified for order #' . $order->getNumber() . ', skipping.');
             return;
         }
 
@@ -57,9 +67,27 @@ final class AdminOrderNotificationListener
                     'localeCode' => $order->getLocaleCode(),
                 ],
             );
+            $this->notifiedOrders[] = $order->getNumber();
             $this->logger->info('[AdminOrderNotification] Email sent successfully.');
         } catch (\Throwable $e) {
             $this->logger->error('[AdminOrderNotification] Failed to send email: ' . $e->getMessage());
         }
+    }
+
+    private function resolveOrder(object $subject): ?OrderInterface
+    {
+        if ($subject instanceof PaymentInterface) {
+            return $subject->getOrder();
+        }
+
+        // PaymentRequest has getPayment()->getOrder()
+        if (method_exists($subject, 'getPayment')) {
+            $payment = $subject->getPayment();
+            if ($payment instanceof PaymentInterface) {
+                return $payment->getOrder();
+            }
+        }
+
+        return null;
     }
 }
