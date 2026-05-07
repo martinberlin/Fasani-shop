@@ -1,2 +1,0 @@
-flux_se_sylius_stripe:
-    resource: "@FluxSESyliusStripePlugin/config/routes.yaml"
