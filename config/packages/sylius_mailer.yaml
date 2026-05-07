@@ -2,3 +2,7 @@ sylius_mailer:
     sender:
         name: 'Fasani Shop'
         address: '%env(APP_MAIL)%'
+    emails:
+        admin_order_notification:
+            subject: 'New order received'
+            template: 'email/admin_order_notification.html.twig'
