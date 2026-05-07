@@ -12,12 +12,13 @@ use Sylius\Component\Mailer\Sender\SenderInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Workflow\Event\Event;
 
-#[AsEventListener(event: 'workflow.sylius_order_payment.completed.pay')]
-#[AsEventListener(event: 'workflow.sylius_order_payment.entered.paid')]
+// sylius_payment_request: fires for Stripe and modern payment plugins
+// sylius_order_payment.completed.pay: fallback for legacy/Payum-based gateways
 #[AsEventListener(event: 'workflow.sylius_payment_request.completed.complete')]
+#[AsEventListener(event: 'workflow.sylius_order_payment.completed.pay')]
 final class AdminOrderNotificationListener
 {
-    /** Prevent duplicate emails if multiple events fire for the same order */
+    /** Prevent duplicate emails if multiple events fire for the same order within the same request */
     private array $notifiedOrders = [];
 
     public function __construct(
@@ -31,7 +32,6 @@ final class AdminOrderNotificationListener
         $this->logger->info('[AdminOrderNotification] Event fired: ' . get_class($event));
 
         $subject = $event->getSubject();
-
         $order = $this->resolveOrder($subject);
 
         if (null === $order) {
