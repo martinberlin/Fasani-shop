@@ -23,7 +23,7 @@
     ],
     "require": {
         "php": "^8.3",
-        "payum/stripe": "^1.7",
+        "flux-se/sylius-stripe-plugin": "^1.0",
         "sylius/mollie-plugin": "^3.2",
         "sylius/paypal-plugin": "^2.0",
         "sylius/sylius": "^2.2",

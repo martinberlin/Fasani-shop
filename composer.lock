@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "687a72f0018f245bdb95c474f17c79fe",
+    "content-hash": "d0c30ec0d2801b95f5ed689d133bad51",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -3059,6 +3059,117 @@
             "time": "2024-11-21T13:46:39+00:00"
         },
         {
+            "name": "flux-se/sylius-stripe-plugin",
+            "version": "1.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Sylius/StripePlugin.git",
+                "reference": "b0577df7753653f336ae06161901181e066f8848"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Sylius/StripePlugin/zipball/b0577df7753653f336ae06161901181e066f8848",
+                "reference": "b0577df7753653f336ae06161901181e066f8848",
+                "shasum": ""
+            },
+            "require": {
+                "stripe/stripe-php": "^16.1",
+                "sylius/core-bundle": "^2.0"
+            },
+            "conflict": {
+                "sylius/sylius": "<=2.0.3"
+            },
+            "require-dev": {
+                "behat/behat": "^3.7",
+                "dbrekelmans/bdi": "^1.2",
+                "doctrine/data-fixtures": "^1.8",
+                "doctrine/orm": "^2.20",
+                "friends-of-behat/mink": "^1.9",
+                "friends-of-behat/mink-browserkit-driver": "^1.4",
+                "friends-of-behat/mink-debug-extension": "^2.0",
+                "friends-of-behat/mink-extension": "^2.5",
+                "friends-of-behat/page-object-extension": "^0.3",
+                "friends-of-behat/suite-settings-extension": "^1.1",
+                "friends-of-behat/symfony-extension": "^2.1",
+                "friends-of-behat/variadic-extension": "^1.3",
+                "lchrusciel/api-test-case": "^5.3",
+                "mockery/mockery": "^1.6",
+                "nyholm/psr7": "^1.8",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan-doctrine": "^1.0",
+                "phpstan/phpstan-mockery": "^1.1",
+                "phpstan/phpstan-phpunit": "^1.4",
+                "phpstan/phpstan-strict-rules": "^1.0",
+                "phpstan/phpstan-symfony": "^1.4",
+                "phpstan/phpstan-webmozart-assert": "^1.0",
+                "phpunit/phpunit": "^9.5",
+                "robertfausk/behat-panther-extension": "^1.1",
+                "spaze/phpstan-stripe": "^3.2",
+                "sylius-labs/coding-standard": "^4.1",
+                "sylius-labs/suite-tags-extension": "^0.2.0",
+                "sylius/sylius": "^2.0",
+                "symfony/browser-kit": "^6.4|^7.1",
+                "symfony/debug-bundle": "^6.4|^7.1",
+                "symfony/dotenv": "^6.4|^7.1",
+                "symfony/intl": "^6.4|^7.1",
+                "symfony/runtime": "^7.1",
+                "symfony/web-profiler-bundle": "^6.4|^7.1",
+                "theofidry/alice-data-fixtures": "^1.7"
+            },
+            "suggest": {
+                "sylius/admin-bundle": "Use the Sylius default admin",
+                "sylius/api-bundle": "Use the Sylius default API",
+                "sylius/shop-bundle": "Use the Sylius default front shop"
+            },
+            "type": "sylius-plugin",
+            "extra": {
+                "runtime": {
+                    "project_dir": "tests/Application"
+                },
+                "branch-alias": {
+                    "dev-main": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "FluxSE\\SyliusStripePlugin\\": "src/",
+                    "Tests\\FluxSE\\SyliusStripePlugin\\Behat\\": "tests/Behat"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Francis HILAIRE",
+                    "email": "Prometee@users.noreply.github.com"
+                }
+            ],
+            "description": "Sylius Stripe plugin using Payment Request",
+            "keywords": [
+                "checkout",
+                "gateway",
+                "payum",
+                "sca",
+                "session",
+                "stripe",
+                "sylius",
+                "sylius-plugin"
+            ],
+            "support": {
+                "issues": "https://github.com/Sylius/StripePlugin/issues",
+                "source": "https://github.com/Sylius/StripePlugin/tree/1.0.8"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sylius",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-03-09T07:58:15+00:00"
+        },
+        {
             "name": "friendsofphp/proxy-manager-lts",
             "version": "v1.0.19",
             "source": {
@@ -6084,75 +6195,6 @@
             "time": "2025-06-03T10:17:15+00:00"
         },
         {
-            "name": "payum/stripe",
-            "version": "1.7.7",
-            "target-dir": "Payum/Stripe",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Payum/Stripe.git",
-                "reference": "7cff4723fb9593c5e6cf86f089f9ff9578dac054"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Stripe/zipball/7cff4723fb9593c5e6cf86f089f9ff9578dac054",
-                "reference": "7cff4723fb9593c5e6cf86f089f9ff9578dac054",
-                "shasum": ""
-            },
-            "require": {
-                "payum/core": "^1.5",
-                "stripe/stripe-php": "^7.0"
-            },
-            "require-dev": {
-                "payum/core": "^1.5",
-                "phpunit/phpunit": "^5.7",
-                "symfony/phpunit-bridge": "^3.1|^4"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.6-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Payum\\Stripe": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Kotlyar Maksim",
-                    "email": "kotlyar.maksim@gmail.com"
-                },
-                {
-                    "name": "Payum project",
-                    "homepage": "https://payum.forma-pro.com/"
-                },
-                {
-                    "name": "Community contributions",
-                    "homepage": "https://github.com/Payum/Stripe/contributors"
-                }
-            ],
-            "description": "The Payum extension. It provides Stripe payment integration.",
-            "homepage": "https://payum.forma-pro.com",
-            "keywords": [
-                "checkout",
-                "direct",
-                "payment",
-                "store card",
-                "stripe",
-                "stripe.js",
-                "subscription"
-            ],
-            "support": {
-                "source": "https://github.com/Payum/Stripe/tree/1.7.7"
-            },
-            "time": "2025-10-27T17:23:03+00:00"
-        },
-        {
             "name": "php-http/discovery",
             "version": "1.20.0",
             "source": {
@@ -7381,16 +7423,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v7.128.0",
+            "version": "v16.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "c704949c49b72985c76cc61063aa26fefbd2724e"
+                "reference": "d6de0a536f00b5c5c74f36b8f4d0d93b035499ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/c704949c49b72985c76cc61063aa26fefbd2724e",
-                "reference": "c704949c49b72985c76cc61063aa26fefbd2724e",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/d6de0a536f00b5c5c74f36b8f4d0d93b035499ff",
+                "reference": "d6de0a536f00b5c5c74f36b8f4d0d93b035499ff",
                 "shasum": ""
             },
             "require": {
@@ -7402,8 +7444,7 @@
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "3.5.0",
                 "phpstan/phpstan": "^1.2",
-                "phpunit/phpunit": "^5.7 || ^9.0",
-                "squizlabs/php_codesniffer": "^3.3"
+                "phpunit/phpunit": "^5.7 || ^9.0"
             },
             "type": "library",
             "extra": {
@@ -7435,9 +7476,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stripe/stripe-php/issues",
-                "source": "https://github.com/stripe/stripe-php/tree/v7.128.0"
+                "source": "https://github.com/stripe/stripe-php/tree/v16.6.0"
             },
-            "time": "2022-05-05T17:18:02+00:00"
+            "time": "2025-02-24T22:35:29+00:00"
         },
         {
             "name": "sylius-labs/association-hydrator",
