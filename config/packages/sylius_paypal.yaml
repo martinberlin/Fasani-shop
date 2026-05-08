@@ -3,5 +3,6 @@ imports:
 
 sylius_paypal:
     sandbox: false        # ← switch to production facilitator
+    enable_express_checkout: false
     logging:
         increased: false
