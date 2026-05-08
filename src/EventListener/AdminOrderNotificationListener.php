@@ -18,7 +18,7 @@ use Symfony\Component\Workflow\Event\Event;
 #[AsEventListener(event: 'workflow.sylius_order_payment.completed.pay')]
 final class AdminOrderNotificationListener
 {
-    /** Prevent duplicate emails if multiple events fire for the same order within the same request */
+    /** @var array<int, string> Prevent duplicate emails if multiple events fire for the same order within the same request */
     private array $notifiedOrders = [];
 
     public function __construct(
@@ -65,7 +65,7 @@ final class AdminOrderNotificationListener
                     'localeCode' => $order->getLocaleCode(),
                 ],
             );
-            $this->notifiedOrders[] = $order->getNumber();
+            $this->notifiedOrders[] = (string) $order->getNumber();
             $this->logger->info('[AdminOrderNotification] Email sent successfully.');
         } catch (\Throwable $e) {
             $this->logger->error('[AdminOrderNotification] Failed to send email: ' . $e->getMessage());

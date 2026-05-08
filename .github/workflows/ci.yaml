@@ -40,7 +40,26 @@ jobs:
                 with:
                     path: '.github/workflows/matrix.json'
                     prop_path: '${{ inputs.type }}.ci'
+    phpstan:
+        name: PHPStan
+        runs-on: ubuntu-latest
+        
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
+            - name: Set up PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.2'
+                  tools: composer
+                  coverage: none
+
+            - name: Install dependencies
+              run: composer install --prefer-dist --no-progress --no-interaction
+
+            - name: Run PHPStan
+              run: vendor/bin/phpstan analyse --memory-limit=512M
     phpunit-cli-api:
         needs: get-matrix
         runs-on: ubuntu-latest
