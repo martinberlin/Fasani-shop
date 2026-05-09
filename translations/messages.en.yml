@@ -53,4 +53,4 @@ sylius:
                 header: 'Your account'
                 order_history: 'Order history'
                 personal_information: 'Personal information'
-    top_bar: 'Sign up to our newsletter and get free shipping on your 1st order!'
+    top_bar: 'Sign up to our newsletter in fasani.de and get free shipping on your 1st order!'
